@@ -1,0 +1,131 @@
+# Dependências do Node.js / React / Vite
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Build do frontend (React + Vite)
+dist/
+dist-ssr/
+*.local
+
+# Arquivos de ambiente do frontend
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Cache do Vite
+.vite/
+
+# Dependências do .NET
+**/bin/
+**/obj/
+**/out/
+**/packages/
+*.user
+*.suo
+*.cache
+*.userprefs
+*.pidb
+*.log
+
+# Build do .NET
+**/Release/
+**/Debug/
+
+# Arquivos de runtime do .NET
+*.exe
+*.dll
+*.pdb
+*.mdb
+*.so
+*.dylib
+
+# Testes do .NET
+**/TestResults/
+*.coverage
+*.coverage.xml
+*.trx
+
+# Arquivos de usuário do Visual Studio
+*.vs/
+.vs/
+*.vssscc
+*.sln.docstates
+*.suo
+*.user
+*.sln.ide
+.idea/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+*.DotSettings.user
+
+# Arquivos de configuração local
+appsettings.Development.json
+appsettings.Local.json
+*.local.json
+
+# Migrations (dependendo da estratégia)
+**/Migrations/*.Designer.cs
+**/Migrations/*.cs
+
+# Docker
+*.pid
+*.pid.lock
+docker-compose.override.yml
+docker-compose.override.yaml
+.env.docker
+*.dockerignore
+
+# Arquivos de log
+logs/
+*.log
+*.logs
+*.nlog
+
+# Arquivos temporários do sistema
+*.DS_Store
+*.thumb
+Thumbs.db
+desktop.ini
+
+# Arquivos de backup
+*.bak
+*.old
+*.orig
+
+# Arquivos compactados temporários
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+# Secrets (nunca commitar!)
+*.pfx
+*.p12
+*.snk
+*.key
+*.crt
+*.pem
+
+# Health check e métricas
+healthchecksdb
+*.metrics
+
+# Perfil e diagnóstico
+*.profiler
+*.diagsession
+
+# Arquivos de publish
+publish/
+**/publish/
+
+# Arquivos de coverage de teste
+coverage/
+*.json.coverage
