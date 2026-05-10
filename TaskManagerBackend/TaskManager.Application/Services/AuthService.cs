@@ -37,7 +37,7 @@ namespace TaskManager.Application.Services
             var result = await _userManager.CreateAsync(user, dto.Password);
             if (!result.Succeeded)
             {
-                return DefaultResponseDTO<string>.Fail("invalid E-mail or password.");
+                return DefaultResponseDTO<string>.Fail("invalid credentials.");
             }
 
             return DefaultResponseDTO<string>.Ok(user.Id, "User registered successfully");
