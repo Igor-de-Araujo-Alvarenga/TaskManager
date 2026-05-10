@@ -81,7 +81,8 @@ docker-compose.override.yml
 docker-compose.override.yaml
 .env.docker
 *.dockerignore
-
+.env
+*.env
 # Arquivos de log
 logs/
 *.log

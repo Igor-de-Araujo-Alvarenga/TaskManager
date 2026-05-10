@@ -1,0 +1,72 @@
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+on:
+  pull_request:
+    branches:
+      - tests
+  push:
+    branches:
+      - tests
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore TaskManagerBackend/TaskManager.sln
+
+      - name: Build
+        run: dotnet build TaskManagerBackend/TaskManager.sln --no-restore --configuration Release
+
+      - name: Run tests
+  run: >
+    dotnet test TaskManagerBackend/TaskManager.Tests/TaskManager.Tests.csproj
+    --no-restore
+    --logger "console;verbosity=detailed"
+    --logger "trx;LogFileName=test-results.xml"
+  env:
+    Jwt__Key: ${{ secrets.JWT_KEY }}
+    Jwt__Issuer: ${{ secrets.JWT_ISSUER }}
+    Jwt__Audience: ${{ secrets.JWT_AUDIENCE }}
+    Jwt__ExpiresInMinutes: ${{ secrets.JWT_EXPIRES }}
+
+      - name: Publish test results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: "**/test-results.xml"
+
+  create-pr-to-master:
+    name: Create PR to Master
+    runs-on: ubuntu-latest
+    needs: test
+    if: success() && github.ref == 'refs/heads/tests'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Create Pull Request to master
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: "tests"
+          destination_branch: "master"
+          pr_title: "✅ Auto PR: tests → master"
+          pr_body: |
+            ## Automated Pull Request
+            All tests passed on `tests` branch.
+            This PR was created automatically by the CI/CD pipeline.
+          pr_label: "automated,ready-to-merge"
+          github_token: ${{ secrets.GITHUB_TOKEN }}

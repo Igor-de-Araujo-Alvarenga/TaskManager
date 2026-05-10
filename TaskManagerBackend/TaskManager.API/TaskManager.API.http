@@ -1,6 +1,29 @@
-@TaskManager.API_HostAddress = http://localhost:5294
+### TaskManager API Tests
 
-GET {{TaskManager.API_HostAddress}}/weatherforecast/
-Accept: application/json
+@baseUrl = http://localhost:5000
+@contentType = application/json
 
-###
+### ─── AUTH ────────────────────────────────────────────
+
+### Register
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "fullName": "John Doe",
+  "email": "john@example.com",
+  "password": "Password1!"
+}
+
+### Login
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "email": "john@example.com",
+  "password": "Password1!"
+}
+
+### Extract token from login response
+@token = {{login.response.body.content.token}}
