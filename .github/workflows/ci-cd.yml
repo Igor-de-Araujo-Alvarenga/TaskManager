@@ -1,4 +1,3 @@
-# .github/workflows/ci-cd.yml
 name: CI/CD Pipeline
 
 on:
@@ -30,16 +29,16 @@ jobs:
         run: dotnet build TaskManagerBackend/TaskManager.sln --no-restore --configuration Release
 
       - name: Run tests
-  run: >
-    dotnet test TaskManagerBackend/TaskManager.Tests/TaskManager.Tests.csproj
-    --no-restore
-    --logger "console;verbosity=detailed"
-    --logger "trx;LogFileName=test-results.xml"
-  env:
-    Jwt__Key: ${{ secrets.JWT_KEY }}
-    Jwt__Issuer: ${{ secrets.JWT_ISSUER }}
-    Jwt__Audience: ${{ secrets.JWT_AUDIENCE }}
-    Jwt__ExpiresInMinutes: ${{ secrets.JWT_EXPIRES }}
+        run: >
+          dotnet test TaskManagerBackend/TaskManager.Tests/TaskManager.Tests.csproj
+          --no-restore
+          --logger "console;verbosity=detailed"
+          --logger "trx;LogFileName=test-results.xml"
+        env:
+          Jwt__Key: ${{ secrets.JWT_KEY }}
+          Jwt__Issuer: ${{ secrets.JWT_ISSUER }}
+          Jwt__Audience: ${{ secrets.JWT_AUDIENCE }}
+          Jwt__ExpiresInMinutes: ${{ secrets.JWT_EXPIRES }}
 
       - name: Publish test results
         uses: actions/upload-artifact@v4
