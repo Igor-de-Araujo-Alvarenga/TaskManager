@@ -60,19 +60,23 @@ services:
       - taskmanager-net
 
   api:
+    # ← was missing indentation
     build:
-      # context = repo root so all class-library projects are visible to the build
       context: ./TaskManagerBackend
-      dockerfile: ./Dockerfile
+      dockerfile: Dockerfile
     container_name: taskmanager-api
     restart: unless-stopped
     environment:
       - ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT:-Development}
       - ASPNETCORE_URLS=http://+:8080
-      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB:-taskmanagerdb};Username=${POSTGRES_USER:-postgres};Password=${POSTGRES_PASSWORD:-postgres}
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      - Jwt__Key=${JWT_KEY}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+      - Jwt__ExpiresInMinutes=${JWT_EXPIRES}
       - RabbitMQ__Host=rabbitmq
-      - RabbitMQ__Username=${RABBITMQ_USER:-guest}
-      - RabbitMQ__Password=${RABBITMQ_PASS:-guest}
+      - RabbitMQ__Username=${RABBITMQ_USER}
+      - RabbitMQ__Password=${RABBITMQ_PASS}
       - Elasticsearch__Uri=http://elasticsearch:9200
     ports:
       - "5000:8080"
@@ -98,9 +102,6 @@ services:
       - "5173:80"
     depends_on:
       - api
-    volumes:
-      - ./TaskManagerUI:/app
-      - /app/node_modules
     networks:
       - taskmanager-net
 
