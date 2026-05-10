@@ -1,12 +1,13 @@
 name: CI/CD Pipeline
 
 on:
-  pull_request:
-    branches:
-      - test
   push:
     branches:
-      - test
+      - test  
+
+permissions:
+  contents: write
+  pull-requests: write  
 
 jobs:
   test:
@@ -51,7 +52,6 @@ jobs:
     name: Create PR to Master
     runs-on: ubuntu-latest
     needs: test
-    if: github.ref == 'refs/heads/test' && github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -64,6 +64,6 @@ jobs:
             --head test \
             --title "✅ Auto PR: test → master" \
             --body "All tests passed on test branch. Created automatically by CI/CD." \
-            || echo "PR already exists"
+            || echo "PR already exists, skipping"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
